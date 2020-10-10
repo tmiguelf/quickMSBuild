@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!-- Deduce Build Type -->
+	<PropertyGroup Condition="'$(BuildType)'==''">
+		<BuildType Condition="'$(UseDebugLibraries)'=='false'">Release</BuildType>
+		<BuildType Condition="'$(UseDebugLibraries)'=='true'">Debug</BuildType>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(BuildType)'==''">
+		<BuildType Condition="'$(Configuration)'=='Release'">Release</BuildType>
+		<BuildType Condition="'$(Configuration)'=='Debug'">Debug</BuildType>
+	</PropertyGroup>
+</Project>

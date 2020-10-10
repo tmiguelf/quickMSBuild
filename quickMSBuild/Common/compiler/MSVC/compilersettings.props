@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<ItemDefinitionGroup>
+		<ClCompile>
+			<WarningLevel>Level4</WarningLevel>
+			<PreprocessorDefinitions>VC_EXTRALEAN;WIN32_LEAN_AND_MEAN;_HAS_EXCEPTIONS=0;NOMINMAX;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<ExceptionHandling>false</ExceptionHandling>
+			<LanguageStandard>stdcpplatest</LanguageStandard>
+			<ConformanceMode>true</ConformanceMode>
+			<EnforceTypeConversionRules>true</EnforceTypeConversionRules>
+			<UseFullPaths>false</UseFullPaths>
+			<RuntimeTypeInfo>false</RuntimeTypeInfo>
+			<FunctionLevelLinking>true</FunctionLevelLinking>
+			<IntrinsicFunctions>true</IntrinsicFunctions>
+			<MultiProcessorCompilation>true</MultiProcessorCompilation>
+			<AdditionalOptions>/Zc:__cplusplus /Zc:strictStrings %(AdditionalOptions)</AdditionalOptions>
+			<ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
+			<EnableModules>false</EnableModules>
+			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+		</ClCompile>
+		<ResourceCompile>
+			<Culture>0x0000</Culture>
+		</ResourceCompile>
+	</ItemDefinitionGroup>
+</Project>

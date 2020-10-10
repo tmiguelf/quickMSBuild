@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<!-- Settings specific to the output type -->
+	<ImportGroup Label="PropertySheets" Condition="'$(ConfigurationType)'=='StaticLibrary'">
+		<Import Project="$(MSBuildThisFileDirectory)staticlib.props" Condition="exists('$(MSBuildThisFileDirectory)staticlib.props')"/>
+	</ImportGroup>
+
+	<ImportGroup Label="PropertySheets" Condition="'$(ConfigurationType)'=='DynamicLibrary'">
+		<Import Project="$(MSBuildThisFileDirectory)binary.props" Condition="exists('$(MSBuildThisFileDirectory)binary.props')"/>
+	</ImportGroup>
+
+	<ImportGroup Label="PropertySheets" Condition="'$(ConfigurationType)'=='Application'">
+		<Import Project="$(MSBuildThisFileDirectory)binary.props" Condition="exists('$(MSBuildThisFileDirectory)binary.props')"/>
+	</ImportGroup>
+
+	<!-- Common settings -->
+	<ImportGroup Label="PropertySheets">
+		<Import Project="$(MSBuildThisFileDirectory)compilersettings.props" Condition="exists('$(MSBuildThisFileDirectory)compilersettings.props')"/>
+		<Import Project="$(MSBuildThisFileDirectory)$(BuildType).props" Condition="exists('$(MSBuildThisFileDirectory)$(BuildType).props')"/>
+	</ImportGroup>
+</Project>

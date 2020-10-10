@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!-- Determine OS this machine is currently running on -->
+	<ImportGroup Label="PropertySheets" Condition="$([MSBUILD]::IsOsPlatform(Windows))">
+		<Import Project="$(MSBuildThisFileDirectory)BuildWindows.props" Condition="exists('$(MSBuildThisFileDirectory)BuildWindows.props')" />
+	</ImportGroup>
+	<ImportGroup Label="PropertySheets" Condition="$([MSBUILD]::IsOsPlatform(Linux))">
+		<Import Project="$(MSBuildThisFileDirectory)BuildLinux.props" Condition="exists('$(MSBuildThisFileDirectory)BuildLinux.props')" />
+	</ImportGroup>
+	<ImportGroup Label="PropertySheets" Condition="$([MSBUILD]::IsOsPlatform(OSX))">
+		<Import Project="$(MSBuildThisFileDirectory)BuildOSX.props" Condition="exists('$(MSBuildThisFileDirectory)BuildOSX.props')" />
+	</ImportGroup>
+</Project>

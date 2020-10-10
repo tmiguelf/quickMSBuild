@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!-- Windows -->
+	<ImportGroup Condition="$([MSBUILD]::IsOsPlatform(Windows))">
+		<Import Project="$(MSBuildThisFileDirectory)BuildWindows.targets"/>
+	</ImportGroup>
+
+	<!-- Linux -->
+	<ImportGroup Condition="$([MSBUILD]::IsOsPlatform(Linux))">
+		<Import Project="$(MSBuildThisFileDirectory)BuildLinux.targets"/>
+	</ImportGroup>
+
+	<!-- OSX -->
+	<ImportGroup Condition="$([MSBUILD]::IsOsPlatform(OSX))">
+		<Import Project="$(MSBuildThisFileDirectory)BuildOSX.targets"/>
+	</ImportGroup>
+
+	<!-- Uknown OS -->
+	<ItemGroup Condition="!$([MSBUILD]::IsOsPlatform(Windows)) AND !$([MSBUILD]::IsOsPlatform(Linux)) AND !$([MSBUILD]::IsOsPlatform(OSX))">
+		<ConfigError Include="Unsupported OS" >
+			<Message>Your operating system is currently unsuported</Message>
+			<File>$(MSBuildThisFileFullPath)</File>
+		</ConfigError>
+	</ItemGroup>
+
+	<!-- Print Warnings and Errors -->
+	<Target Name="PrintConfigWarning" BeforeTargets="Build">
+		<Warning Text="%(ConfigWarning.Message)" File="%(ConfigWarning.File)" Condition="'@(ConfigWarning)'!=''"/>
+	</Target>
+	<Target Name="PrintConfigError" BeforeTargets="Build">
+		<Error Text="%(ConfigError.Message)" File="%(ConfigError.File)" ContinueOnError="ErrorAndContinue" Condition="'@(ConfigError)'!=''"/>
+	</Target>
+</Project>
