@@ -6,17 +6,24 @@
 		<Import Project="$(MSBuildThisFileDirectory)staticlib.props" Condition="exists('$(MSBuildThisFileDirectory)staticlib.props')"/>
 	</ImportGroup>
 
-	<ImportGroup Label="PropertySheets" Condition="'$(ConfigurationType)'=='DynamicLibrary'">
+	<ImportGroup Label="PropertySheets" Condition="'$(ConfigurationType)'=='DynamicLibrary' OR '$(ConfigurationType)'=='Application'">
 		<Import Project="$(MSBuildThisFileDirectory)binary.props" Condition="exists('$(MSBuildThisFileDirectory)binary.props')"/>
 	</ImportGroup>
 
-	<ImportGroup Label="PropertySheets" Condition="'$(ConfigurationType)'=='Application'">
-		<Import Project="$(MSBuildThisFileDirectory)binary.props" Condition="exists('$(MSBuildThisFileDirectory)binary.props')"/>
+	<ImportGroup Label="PropertySheets" Condition="'$(ConfigurationType)'=='Utility'">
+		<Import Project="$(MSBuildThisFileDirectory)utility.props" Condition="exists('$(MSBuildThisFileDirectory)utility.props')"/>
 	</ImportGroup>
 
 	<!-- Common settings -->
 	<ImportGroup Label="PropertySheets">
 		<Import Project="$(MSBuildThisFileDirectory)compilersettings.props" Condition="exists('$(MSBuildThisFileDirectory)compilersettings.props')"/>
+		<Import Project="$(MSBuildThisFileDirectory)$(PlatformShortName).props" Condition="exists('$(MSBuildThisFileDirectory)$(PlatformShortName).props')"/>
 		<Import Project="$(MSBuildThisFileDirectory)$(BuildType).props" Condition="exists('$(MSBuildThisFileDirectory)$(BuildType).props')"/>
 	</ImportGroup>
+
+	<!-- extension -->
+	<ImportGroup Label="PropertySheets">
+		<Import Project="$(CompilerExtensionPath)extension.include.props" Condition="exists('$(CompilerExtensionPath)extension.include.props')" />
+	</ImportGroup>
+
 </Project>

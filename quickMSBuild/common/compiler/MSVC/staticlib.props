@@ -6,7 +6,8 @@
 	</PropertyGroup>
 	<ItemDefinitionGroup>
 		<Lib>
-			<LinkTimeCodeGeneration>false</LinkTimeCodeGeneration>
+			<LinkTimeCodeGeneration Condition="'$(BuildType)'=='Release'">true</LinkTimeCodeGeneration>
+			<LinkTimeCodeGeneration Condition="'$(BuildType)'=='Debug'">false</LinkTimeCodeGeneration>
 		</Lib>
 	</ItemDefinitionGroup>
 </Project>

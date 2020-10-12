@@ -17,6 +17,7 @@
 			<GenerateMapFile>true</GenerateMapFile>
 			<MapFileName>$(DebugDataPath)$(PlatformShortName)_$(BuildType)/$(TargetName).map</MapFileName>
 			<LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+			<SubSystem>Windows</SubSystem>
 		</Link>
 	</ItemDefinitionGroup>
 	<ItemDefinitionGroup Condition="'$(BuildType)'=='Release'">
