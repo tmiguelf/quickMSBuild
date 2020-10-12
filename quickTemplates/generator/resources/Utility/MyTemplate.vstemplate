@@ -1,0 +1,27 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
+	<TemplateData>
+		<Name>Quick Utility</Name>
+		<Description>Quick Utility</Description>
+		<ProjectType>VC</ProjectType>
+		<ProjectSubType>
+		</ProjectSubType>
+		<SortOrder>1000</SortOrder>
+		<CreateNewFolder>true</CreateNewFolder>
+		<ProvideDefaultName>false</ProvideDefaultName>
+		<LocationField>Enabled</LocationField>
+		<EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+		<Icon>__TemplateIcon.ico</Icon>
+		<ProjectTypeTag>other</ProjectTypeTag>
+	</TemplateData>
+	<TemplateContent>
+		<Project TargetFileName="$projectname$.vcxproj" File="Empty_x64.vcxproj" ReplaceParameters="true">
+			<ProjectItem ReplaceParameters="true" TargetFileName="$projectname$.vcxproj.filters">Empty_x64.vcxproj.filters</ProjectItem>
+			<ProjectItem ReplaceParameters="false" TargetFileName="$projectname$.include.props">include.props</ProjectItem>
+			<Folder Name="include" TargetFolderName="include">
+				<Folder Name="lib" TargetFolderName="$projectname$">
+					<ProjectItem ReplaceParameters="false" TargetFileName="$projectname$.hpp" OpenInEditor="true" OpenOrder="0">header.hpp</ProjectItem>
+				</Folder>
+			</Folder>
+		</Project>
+	</TemplateContent>
+</VSTemplate>

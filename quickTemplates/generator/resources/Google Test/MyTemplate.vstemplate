@@ -1,0 +1,26 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
+	<TemplateData>
+		<Name>Quick Google test</Name>
+		<Description>Quick Google Test</Description>
+		<ProjectType>VC</ProjectType>
+		<ProjectSubType />
+		<SortOrder>1000</SortOrder>
+		<CreateNewFolder>true</CreateNewFolder>
+		<ProvideDefaultName>false</ProvideDefaultName>
+		<LocationField>Enabled</LocationField>
+		<EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+		<Icon>__TemplateIcon.ico</Icon>
+		<ProjectTypeTag>cpp</ProjectTypeTag>
+		<ProjectTypeTag>windows</ProjectTypeTag>
+		<ProjectTypeTag>console</ProjectTypeTag>
+		<ProjectTypeTag>test</ProjectTypeTag>
+	</TemplateData>
+	<TemplateContent>
+		<Project TargetFileName="$projectname$.vcxproj" File="capplication.vcxproj" ReplaceParameters="true">
+			<ProjectItem ReplaceParameters="true" TargetFileName="$projectname$.vcxproj.filters">capplication.vcxproj.filters</ProjectItem>
+			<Folder Name="src" TargetFolderName="src">
+				<ProjectItem ReplaceParameters="false" TargetFileName="$projectname$.cpp" OpenInEditor="true">test.cpp</ProjectItem>
+			</Folder>
+		</Project>
+	</TemplateContent>
+</VSTemplate>

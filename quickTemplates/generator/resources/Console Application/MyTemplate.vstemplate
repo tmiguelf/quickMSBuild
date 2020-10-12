@@ -1,0 +1,30 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
+	<TemplateData>
+		<Name>Quick Console Application</Name>
+		<Description>Console Application</Description>
+		<ProjectType>VC</ProjectType>
+		<ProjectSubType />
+		<SortOrder>1000</SortOrder>
+		<CreateNewFolder>true</CreateNewFolder>
+		<ProvideDefaultName>false</ProvideDefaultName>
+		<LocationField>Enabled</LocationField>
+		<EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+		<Icon>__TemplateIcon.ico</Icon>
+		<ProjectTypeTag>cpp</ProjectTypeTag>
+		<ProjectTypeTag>windows</ProjectTypeTag>
+		<ProjectTypeTag>console</ProjectTypeTag>
+	</TemplateData>
+	<TemplateContent>
+		<Project TargetFileName="$projectname$.vcxproj" File="capplication.vcxproj" ReplaceParameters="true">
+			<ProjectItem ReplaceParameters="false" TargetFileName="$projectname$.vcxproj.filters">capplication.vcxproj.filters</ProjectItem>
+			<Folder Name="resources" TargetFolderName="resources">
+				<ProjectItem ReplaceParameters="true" TargetFileName="versionSpecific.h">versionSpecific.h</ProjectItem>
+				<ProjectItem ReplaceParameters="false" TargetFileName="genericIcon.rc">genericIcon.rc</ProjectItem>
+				<ProjectItem ReplaceParameters="false" TargetFileName="generic.ico">generic.ico</ProjectItem>
+			</Folder>
+			<Folder Name="src" TargetFolderName="src">
+				<ProjectItem ReplaceParameters="false" TargetFileName="main.cpp" OpenInEditor="true">main.cpp</ProjectItem>
+			</Folder>
+		</Project>
+	</TemplateContent>
+</VSTemplate>
