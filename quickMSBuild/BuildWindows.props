@@ -1,55 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-	<!-- Release or Debug ?-->
+	<!-- Release or Debug? -->
 	<ImportGroup Label="PropertySheets">
 		<Import Project="$(MSBuildThisFileDirectory)Common\buildtype.props" />
 	</ImportGroup>
 
-	<!-- Native build or cross compiled? -->
-	<PropertyGroup Condition="'$(BuildMethod)'==''">
-		<BuildMethod>native</BuildMethod>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(BuildMethod)'=='native'">
+	<!-- What's the target OS and used compiler? -->
+
+	<PropertyGroup Label="quickMSBuild" Condition="'$(PlatformToolset)'=='v142'">
 		<TargetOS>Windows</TargetOS>
-		<CompilerType Condition="'$(CompilerType)'==''">MSVC</CompilerType>
+		<CompilerFlavour>MSVC</CompilerFlavour>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(BuildMethod)'=='wsl' OR '$(BuildMethod)'=='ssh'">
+	<PropertyGroup Label="quickMSBuild" Condition="'$(PlatformToolset)'=='ClangCL'">
+		<TargetOS>Windows</TargetOS>
+		<CompilerFlavour>clang</CompilerFlavour>
+	</PropertyGroup>
+	
+	<PropertyGroup Label="quickMSBuild" Condition="'$(PlatformToolset)'=='WSL_Clang_1_0' OR '$(PlatformToolset)'=='Remote_Clang_1_0'">
 		<TargetOS>Linux</TargetOS>
-		<CompilerType Condition="'$(CompilerType)'==''">g++</CompilerType>
+		<CompilerFlavour>clang</CompilerFlavour>
 	</PropertyGroup>
 
-	<!-- Validate BuildMethod -->
-	<ItemGroup Condition="'$(BuildMethod)'!='native' AND '$(BuildMethod)'!='wsl' AND '$(BuildMethod)'!='ssh'">
-		<ConfigError Include="Unsuported BuildMethod">
-			<Message>Unable to determine BuildMethod ("$(BuildMethod)") or it is currently unsuported</Message>
+	<PropertyGroup Label="quickMSBuild" Condition="'$(PlatformToolset)'=='WSL_1_0' OR '$(PlatformToolset)'=='Remote_GCC_1_0'">
+		<TargetOS>Linux</TargetOS>
+		<CompilerFlavour>g++</CompilerFlavour>
+	</PropertyGroup>
+
+	<!-- Validate OS -->
+	<ItemGroup Condition="'$(TargetOS)'!='Windows' AND '$(TargetOS)'!='Linux'">
+		<ConfigError Include="Unsuported OS">
+			<Message>Unable to determine TargetOS from PlatformToolset = "$(PlatformToolset)", or it's currently unsuported</Message>
 			<File>$(MSBuildThisFileFullPath)</File>
 		</ConfigError>
 	</ItemGroup>
 
-	<!-- Validate compiler -->
-	<ItemGroup Condition="'$(TargetOS)'=='Windows'">
-		<ConfigError Include="Unsuported CompilerType" Condition="'$(CompilerType)'!='MSVC' AND '$(CompilerType)'!='clang'">
-			<Message>Unable to determine CompilerType ("$(CompilerType)") or it is currently unsuported</Message>
-			<File>$(MSBuildThisFileFullPath)</File>
-		</ConfigError>
-	</ItemGroup>
-	<ItemGroup Condition="'$(TargetOS)'=='Linux'">
-		<ConfigError Include="Unsuported CompilerType" Condition="'$(CompilerType)'!='gcc' AND '$(CompilerType)'!='clang'">
-			<Message>Unable to determine CompilerType ("$(CompilerType)") or it is currently unsuported</Message>
+	<!-- Validate Compiler -->
+	<ItemGroup Condition="'$(CompilerFlavour)'!='MSVC' AND '$(CompilerFlavour)'!='clang' AND '$(CompilerFlavour)'!='g++'">
+		<ConfigError Include="Unsuported compiler">
+			<Message>Unable to determine CompilerFlavour from PlatformToolset = "$(PlatformToolset)", or it's currently unsuported</Message>
 			<File>$(MSBuildThisFileFullPath)</File>
 		</ConfigError>
 	</ItemGroup>
 
-	<!-- Pre-config -->
-		<!-- OS Specific -->
+	<!-- OS Specific config -->
 	<PropertyGroup Label="Globals" Condition="'$(TargetOS)'=='Windows'">
+		<VCProjectVersion>16.0</VCProjectVersion>
 		<WindowsTargetPlatformVersion Condition="'$(WindowsTargetPlatformVersion)'==''">10.0</WindowsTargetPlatformVersion>
-	</PropertyGroup>
-	<PropertyGroup Label="Configuration" Condition="'$(TargetOS)'=='Windows'">
-		<WholeProgramOptimization Condition="'$(WholeProgramOptimization)'=='' AND '$(BuildType)'=='Release'">true</WholeProgramOptimization>
-		<UseDebugLibraries Condition="'$(BuildType)'=='Release'">false</UseDebugLibraries>
-		<UseDebugLibraries Condition="'$(BuildType)'=='Debug'">true</UseDebugLibraries>
 	</PropertyGroup>
 
 	<PropertyGroup Label="Globals" Condition="'$(TargetOS)'=='Linux'">
@@ -58,38 +55,47 @@
 		<TargetLinuxPlatform>Generic</TargetLinuxPlatform>
 	</PropertyGroup>
 
-		<!-- Compiler Specific -->
-	<PropertyGroup Label="Configuration" Condition="'$(CompilerType)'=='MSVC'">
-		<PlatformToolset>v142</PlatformToolset>
+	<!-- Microsoft defaults messes up this properties :( -->
+	<!-- So we need to save them, to later restore them -->
+	<PropertyGroup Label="Configuration">
+		<quickSaveConfigurationType>$(ConfigurationType)</quickSaveConfigurationType>
+		<quickSavePlatformToolset>$(PlatformToolset)</quickSavePlatformToolset>
+		<quickSaveUseDebugLibraries>$(PlatformToolset)</quickSaveUseDebugLibraries>
 	</PropertyGroup>
-	<PropertyGroup Label="Configuration" Condition="'$(CompilerType)'=='clang'">
-		<PlatformToolset Condition="'$(TargetOS)'=='Windows'">ClangCL</PlatformToolset>
-		<PlatformToolset Condition="'$(BuildMethod)'=='wsl'" >WSL_Clang_1_0</PlatformToolset>
-		<PlatformToolset Condition="'$(BuildMethod)'=='ssh'" >Remote_Clang_1_0</PlatformToolset>
+
+	<!-- Microsoft defaults -->
+	<ImportGroup Label="PropertySheets">
+		<Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+	</ImportGroup>
+
+	<!-- Compiler Specific config -->
+	<PropertyGroup Label="Configuration" Condition="'$(TargetOS)'=='Windows'">
+		<WholeProgramOptimization Condition="'$(WholeProgramOptimization)'=='' AND '$(BuildType)'=='Release'">true</WholeProgramOptimization>
 	</PropertyGroup>
-	<PropertyGroup Label="Configuration" Condition="'$(CompilerType)'=='g++'">
-		<PlatformToolset Condition="'$(BuildMethod)'=='wsl'" >WSL_1_0</PlatformToolset>
-		<PlatformToolset Condition="'$(BuildMethod)'=='ssh'" >Remote_GCC_1_0</PlatformToolset>
+
+	<PropertyGroup Label="Configuration">
+		<PlatformToolset>$(quickSavePlatformToolset)</PlatformToolset>
+		<ConfigurationType>$(quickSaveConfigurationType)</ConfigurationType>
+		<UseDebugLibraries>$(quickSaveUseDebugLibraries)</UseDebugLibraries>
 	</PropertyGroup>
 
 	<!-- Default Windows Props: Microsoft already done most of the work -->
 	<ImportGroup Label="PropertySheets">
-		<Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
 		<Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
 	</ImportGroup>
 
 	<!-- Path to extensions -->
-	<PropertyGroup Label="UserMacros">
+	<PropertyGroup Label="quickMSBuild">
 		<CompilerExtensionPath>$(MSBuildThisFileDirectory)common\extension\</CompilerExtensionPath>
 	</PropertyGroup>
 
 	<!-- Compiler specific settings -->
-	<ImportGroup Label="PropertySheets" Condition="'$(CompilerType)'!=''">
-		<Import Project="$(MSBuildThisFileDirectory)common\compiler\$(CompilerType)\$(CompilerType).props" Condition="exists('$(MSBuildThisFileDirectory)common\compiler\$(CompilerType)\$(CompilerType).props')" />
+	<ImportGroup Label="PropertySheets" Condition="'$(CompilerFlavour)'!=''">
+		<Import Project="$(MSBuildThisFileDirectory)common\compiler\$(CompilerFlavour)\$(CompilerFlavour).props" Condition="exists('$(MSBuildThisFileDirectory)common\compiler\$(CompilerFlavour)\$(CompilerFlavour).props')" />
 	</ImportGroup>
 	<ItemGroup> <!-- Warnings -->
-		<ConfigError Include="Compiler Props not found" Condition="!exists('$(MSBuildThisFileDirectory)common\compiler\$(CompilerType)\$(CompilerType).props')" >
-			<Message>Your Compiler Flavour "$(CompilerType)" is currently unsuported</Message>
+		<ConfigError Include="Compiler Props not found" Condition="!exists('$(MSBuildThisFileDirectory)common\compiler\$(CompilerFlavour)\$(CompilerFlavour).props')" >
+			<Message>Your Compiler Flavour "$(CompilerFlavour)" is currently unsuported</Message>
 			<File>$(MSBuildThisFileFullPath)</File>
 		</ConfigError>
 	</ItemGroup>

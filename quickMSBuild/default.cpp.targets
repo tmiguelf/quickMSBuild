@@ -27,7 +27,8 @@
 	<Target Name="PrintConfigWarning" BeforeTargets="Build">
 		<Warning Text="%(ConfigWarning.Message)" File="%(ConfigWarning.File)" Condition="'@(ConfigWarning)'!=''"/>
 	</Target>
-	<Target Name="PrintConfigError" BeforeTargets="Build">
+	<Target Name="PrintConfigError" BeforeTargets="Build" >
 		<Error Text="%(ConfigError.Message)" File="%(ConfigError.File)" ContinueOnError="ErrorAndContinue" Condition="'@(ConfigError)'!=''"/>
+		<Error Text="Errors were found in the setup, the build can not continue" File="$(MSBuildThisFileFullPath)" ContinueOnError="ErrorAndStop" Condition="'@(ConfigError)'!=''"/>
 	</Target>
 </Project>
