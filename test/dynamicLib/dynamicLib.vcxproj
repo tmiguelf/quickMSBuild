@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{$guid1$}</ProjectGuid>
+    <ProjectGuid>{70562df1-427d-4c52-ae43-e757234c9522}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -38,21 +38,30 @@
     <UseDebugLibraries>false</UseDebugLibraries>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
   </PropertyGroup>
   <ImportGroup Label="PropertySheets">
     <Import Project="$(SolutionDir)locations.props" />
     <Import Project="$(quickMSBuildPath)default.cpp.props" />
-    <Import Project="$(GoogleTestPath)GoogleTest.import.props" />
+    <Import Project="$(staticLibPath)staticLib.import.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup>
-    <Link>
-      <SubSystem>Console</SubSystem>
-    </Link>
+    <ClCompile>
+      <PreprocessorDefinitions>_dynamicLib_EXPORTS_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\$projectname$.cpp" />
+    <ClCompile Include="src\dynamicLib.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\dynamicLib\dynamicLib.hpp" />
+    <ClInclude Include="include\dynamicLib\dynamicLib_api.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dynamicLib.import.props" />
+    <None Include="dynamicLib.include.props" />
   </ItemGroup>
   <Import Project="$(quickMSBuildPath)default.cpp.targets" />
 </Project>
