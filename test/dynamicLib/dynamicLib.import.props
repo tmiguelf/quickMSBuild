@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<ProjectReference Include="$(MSBuildThisFileDirectory)dynamicLib.vcxproj">
 			<Project>{70562df1-427d-4c52-ae43-e757234c9522}</Project>

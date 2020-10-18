@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
 	<!-- Release or Debug? -->
 	<ImportGroup Label="PropertySheets">
@@ -16,7 +16,7 @@
 		<TargetOS>Windows</TargetOS>
 		<CompilerFlavour>clang</CompilerFlavour>
 	</PropertyGroup>
-	
+
 	<PropertyGroup Label="quickMSBuild" Condition="'$(PlatformToolset)'=='WSL_Clang_1_0' OR '$(PlatformToolset)'=='Remote_Clang_1_0'">
 		<TargetOS>Linux</TargetOS>
 		<CompilerFlavour>clang</CompilerFlavour>
@@ -34,6 +34,14 @@
 			<File>$(MSBuildThisFileFullPath)</File>
 		</ConfigError>
 	</ItemGroup>
+
+	<PropertyGroup Label="quickMSBuild" Condition="'$(TargetOS)'=='Windows'">
+		<shortOS>win</shortOS>
+	</PropertyGroup>
+
+	<PropertyGroup Label="quickMSBuild" Condition="'$(TargetOS)'=='Linux'">
+		<shortOS>lin</shortOS>
+	</PropertyGroup>
 
 	<!-- Validate Compiler -->
 	<ItemGroup Condition="'$(CompilerFlavour)'!='MSVC' AND '$(CompilerFlavour)'!='clang' AND '$(CompilerFlavour)'!='g++'">
