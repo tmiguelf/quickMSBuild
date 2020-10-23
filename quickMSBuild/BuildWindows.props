@@ -68,7 +68,7 @@
 	<PropertyGroup Label="Configuration">
 		<quickSaveConfigurationType>$(ConfigurationType)</quickSaveConfigurationType>
 		<quickSavePlatformToolset>$(PlatformToolset)</quickSavePlatformToolset>
-		<quickSaveUseDebugLibraries>$(PlatformToolset)</quickSaveUseDebugLibraries>
+		<quickSaveUseDebugLibraries>$(UseDebugLibraries)</quickSaveUseDebugLibraries>
 	</PropertyGroup>
 
 	<!-- Microsoft defaults -->

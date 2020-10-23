@@ -4,6 +4,7 @@
 		<ClCompile>
 			<PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
 			<TreatWarningAsError>false</TreatWarningAsError>
+			<RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
 		</ClCompile>
 	</ItemDefinitionGroup>
 </Project>
