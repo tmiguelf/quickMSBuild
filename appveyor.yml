@@ -5,4 +5,4 @@ os: Visual Studio 2019
 build: off
 
 test_script:
- msbuild /t:Build /p:Configuration=Release "./test/test.sln"
+ msbuild /t:Build /p:Configuration=Release "./test/test.sln" -maxcpucount
