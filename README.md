@@ -189,7 +189,7 @@ This file, other than the standard XML header elements, it need only 2 blocks:
  1 . A [PropertyGroup]( https://docs.microsoft.com/en-us/visualstudio/msbuild/propertygroup-element-msbuild?view=vs-2019) element creating the following properties:
   * DebugDataPath - Indicating the location where the .pdb and .map of will be output (by default). If you are a professional software company with clients, you would want to save these.
   * RuntimePath - Where the binary outputs will go (by default). Where you would setup your test environment to run your binaries on.
-2. An [ImportGroup]( https://docs.microsoft.com/en-us/visualstudio/msbuild/importgroup-element?view=vs-2019) element, where it will have additional [Import]( https://docs.microsoft.com/en-us/visualstudio/msbuild/import-element-msbuild?view=vs-2019) to import “repoLocation.props” files from either the current repository or other repositories imported as a git submodule.
+2. An [ImportGroup]( https://docs.microsoft.com/en-us/visualstudio/msbuild/importgroup-element?view=vs-2019) element, where it will have additional [Import]( https://docs.microsoft.com/en-us/visualstudio/msbuild/import-element-msbuild?view=vs-2019) to import "repoLocation.props" files from either the current repository or other repositories imported as a git submodule.
 Example:
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -209,7 +209,7 @@ Example:
 Please take advantage of [MSBuild well known properties](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-reserved-and-well-known-properties?view=vs-2019) for a proper configuration.
 
 ### repoLocations.props
-The purpose of this file is to pass information about the location of projects available in your source control repository (especially important in a multi repository system). You can place this file at the top level of your repository, but it not need be, this file can be placed anywhere else. It should be the responsibility of the external repository that imports the current repository to provide a “locations.props” file to their projects and encode the right location of the “repoLocations.props”. (Note that the file may not even be named repoLocations.props)
+The purpose of this file is to pass information about the location of projects available in your source control repository (especially important in a multi repository system). You can place this file at the top level of your repository, but it not need be, this file can be placed anywhere else. It should be the responsibility of the external repository that imports the current repository to provide a "locations.props" file to their projects and encode the right location of the "repoLocations.props". (Note that the file may not even be named repoLocations.props)
 This file, other than the standard XML header elements, it need only 1 block, the [PropertyGroup]( https://docs.microsoft.com/en-us/visualstudio/msbuild/propertygroup-element-msbuild?view=vs-2019) element, listing sub-elements that encode the locations of other projects in this repository (that you intend to be accessible externally).
 Ex.
 ```xml
@@ -222,11 +222,14 @@ Ex.
 </Project>
 ```
 
-## Projects .include.props and .import.props
+### Projects .include.props and .import.props
 If you created a new library using the templates you will notice 2 files, *.include.props and *.import.props.
 These files are to be used by other projects that may include this as a dependency.
-The *.import.props adds the “additional include directories” of this project into other projects (that add this one as a dependency) and adds a link dependency.
-The *.include.props only adds the “additional include directories”.
+The *.import.props adds the "additional include directories" of this project into other projects (that add this one as a dependency) and adds a link dependency.
+The *.include.props only adds the "additional include directories".
+
+## Extensions
+Compilers as of yet do not have a common of declaring interfaces that can be imported or exported from dynamically linked libraries. In order to support multi-platform, I provided an "extension/dll_api_macros.h" with the macros "DLL_IMPORT" and "DLL_EXPORT" for that purpose.
 
 ## Requirements
 Visual studio 2019 version 16.6 or higher
