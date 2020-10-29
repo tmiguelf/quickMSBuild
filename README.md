@@ -36,12 +36,152 @@ If you just want a quick start this is what you do to start using it:
  5. **Optional**. Create a repoLocations.props to indicate where other projects live.
 
 ### Detail
-This setup works on the principle of exploiting arcane knowledge of [MSBuild](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild?view=vs-2019), all of which is publicly document in books like [Inside the Microsoft Build Engine](https://www.microsoftpressstore.com/store/inside-the-microsoft-build-engine-using-msbuild-and-9780735645240).
+This setup works by exploiting some arcane knowledge of [MSBuild](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild?view=vs-2019), all of which is publicly document in books like [Inside the Microsoft Build Engine](https://www.microsoftpressstore.com/store/inside-the-microsoft-build-engine-using-msbuild-and-9780735645240).
 A .vcxproj file is essentially an XML with structured information with instructions on how to setup the build. And we will take advantage of the [Import]( https://docs.microsoft.com/en-us/visualstudio/msbuild/import-element-msbuild?view=vs-2019) statement to load into the project other configurations that are defined in an external file.
 
+Let’s take a look at an example of a project file:
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<!-- Project Unique ID
+	Each individual project must have a unique ID
+	in order for Visual Studio/MSBuild to be able work properly
+-->
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{0a2614b1-2014-4443-a83b-e8a2bef0f970}</ProjectGuid>
+  </PropertyGroup>
 
-TODO
+<!-- Configuration matrix
+	This tells what type of build configurations are available in your project.
+	The "Platform" be an indicator of what type of CPU the build is targeting.
+	The "Configuration" can be named anything, it doesn't have to be Release
+	or Debug, it just usually is that way because that is what normally what
+	it is used for. The "Configuration" is just a means for the user to be
+	able to setup and choose multiple ways in which the project can be built.
+	For the project to work properly the "Configuration" and "Platform" listed
+	must be the same as specified in the "Include" attribute of the
+	"ProjectConfiguration" node it is in
+-->
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="WSL_Debug|x64">
+      <Configuration>WSL_Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="WSL_Release|x64">
+      <Configuration>WSL_Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
 
+<!-- Toolset selection
+	This is where we start matching particular configurations
+	to the ways in which we want to compile our source code.
+	quickMSBuild requires you to define the "PlatformToolset"
+	and the "UseDebugLibraries".
+
+	The "PlatformToolset" is going to define what type of build
+	tools to use. The following are supported:
+		- v142             - MSVC v142 on Windows
+		- ClangCL          - Clang compiler on Windows
+		- WSL_1_0          - gcc/g++ compiler on Linux using WSL
+		- Remote_GCC_1_0   - gcc/g++ compiler on Linux using SSH
+		- WSL_Clang_1_0    - Clang compiler on Linux using WSL
+		- Remote_Clang_1_0 - Clang compiler on Linux using SSH
+
+	The "UseDebugLibraries" option is going to define if
+	the build is a Debug build or a Release build
+
+	Everything else, quickMSBuild will deduce for you
+	based on the "PlatformToolset"
+-->
+  <PropertyGroup Label="quickMSBuild" Condition="'$(Configuration)'=='Debug'">
+    <PlatformToolset>v142</PlatformToolset>
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Label="quickMSBuild" Condition="'$(Configuration)'=='Release'">
+    <PlatformToolset>v142</PlatformToolset>
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Label="quickMSBuild" Condition="'$(Configuration)'=='WSL_Debug'">
+    <PlatformToolset>WSL_1_0</PlatformToolset>
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Label="quickMSBuild" Condition="'$(Configuration)'=='WSL_Release'">
+    <PlatformToolset>WSL_1_0</PlatformToolset>
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+
+<!-- Define the type of output
+	The "ConfigurationType" defines the type of generated output:
+		- StaticLibrary  - Makes a static library (.lib or .a)
+		- DynamicLibrary - Makes a dynamic link library (.dll) or shared object (.so)
+		- Application    - Makes an executable
+		- Utility        - Makes nothing. Can be used for example to create a header only library
+-->
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+  </PropertyGroup>
+
+<!-- Where the magic happens
+	This is where projects gets most of its properties loaded.
+
+	The first property sheet to be imported MUST be the "locations.props".
+	The "locations.props" file can be found by using the macro "$(SolutionDir)"
+	and the purpose of it is to load the locations of all visible projects
+	that this project might use as a dependency.
+
+	The second property sheet to be imported MUST be the "default.cpp.props"
+	from quickMSBuild, which should be easily found without a problem because
+	the "locations.props" already loaded for us the macro "$(quickMSBuildPath)"
+	with it's location... Neat!
+	The purpose of this file is to locate and configure all the build tools.
+	This is where most of the magic happens.
+
+	Property files for additional dependencies should go next
+-->
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(SolutionDir)locations.props" />
+    <Import Project="$(quickMSBuildPath)default.cpp.props" />
+    <!-- Add your dependencies here-->
+    <Import Project="$(staticLibPath)staticLib.import.props" />
+    <Import Project="$(dynamicLibPath)dynamicLib.import.props" />
+  </ImportGroup>
+
+<!-- Compiler/Linker option configuration
+	There shouldn't be much to see here anymore because by default
+	the good options are already set by default
+-->
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+
+<!-- File list -->
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
+  </ItemGroup>
+
+<!-- Target files
+	These files define what happens when you do a "build",
+	"compile", or whatever action that needs to take place.
+	It also defines what properties are available from
+	the visual studio menus.
+-->
+  <Import Project="$(quickMSBuildPath)default.cpp.targets" />
+</Project>
+```
 
 ### locations.props
 The purpose of this file is to paired with a .sln file and serve as a well-known location that the projects can easily find, where information regarding all other locations in your version control repository can be found.
@@ -61,11 +201,12 @@ Example:
 	</PropertyGroup>
 
 	<ImportGroup Label="PropertySheets">
-		<Import Project="$(MSBuildThisFileDirectory) repoLocations.props" />
+		<Import Project="$(MSBuildThisFileDirectory)repoLocations.props" />
 <!-- Other git submodules locations-->
 	</ImportGroup>
 </Project>
 ```
+Please take advantage of [MSBuild well known properties](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-reserved-and-well-known-properties?view=vs-2019) for a proper configuration.
 
 ### repoLocations.props
 The purpose of this file is to pass information about the location of projects available in your source control repository (especially important in a multi repository system). You can place this file at the top level of your repository, but it not need be, this file can be placed anywhere else. It should be the responsibility of the external repository that imports the current repository to provide a “locations.props” file to their projects and encode the right location of the “repoLocations.props”. (Note that the file may not even be named repoLocations.props)
@@ -80,6 +221,12 @@ Ex.
 	</PropertyGroup>
 </Project>
 ```
+
+## Projects .include.props and .import.props
+If you created a new library using the templates you will notice 2 files, *.include.props and *.import.props.
+These files are to be used by other projects that may include this as a dependency.
+The *.import.props adds the “additional include directories” of this project into other projects (that add this one as a dependency) and adds a link dependency.
+The *.include.props only adds the “additional include directories”.
 
 ## Requirements
 Visual studio 2019 version 16.6 or higher
