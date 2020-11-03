@@ -4,12 +4,13 @@
 		<ClCompile>
 			<RuntimeTypeInfo>false</RuntimeTypeInfo>
 			<CLanguageStandard>c11</CLanguageStandard>
-			<CppLanguageStandard>c++17</CppLanguageStandard>
+			<CppLanguageStandard>Default</CppLanguageStandard>
 			<ExceptionHandling>Disabled</ExceptionHandling>
 			<LinkTimeOptimization>true</LinkTimeOptimization>
 			<SymbolsHiddenByDefault>true</SymbolsHiddenByDefault>
 			<ThreadSafeStatics>Yes</ThreadSafeStatics>
 			<PositionIndependentCode>true</PositionIndependentCode>
+			<AdditionalOptions>-std=c++20 %(AdditionalOptions)</AdditionalOptions>
 		</ClCompile>
 	</ItemDefinitionGroup>
 </Project>
