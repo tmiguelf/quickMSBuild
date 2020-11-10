@@ -7,9 +7,9 @@ build: off
 install:
     - wsl sudo apt update
     - wsl sudo apt full-upgrade -y
-    - wsl sudo sed --in-place 's/Prompt=lts/Prompt=normal/' /etc/update-manager/release-upgrades
-    - wsl sudo do-release-upgrade -q
+    - wsl sudo sed --in-place 's/focal/groovy/g' /etc/apt/sources.list
     - wsl sudo apt update
+    - wsl sudo apt -y upgrade
     - wsl sudo apt install -y g++
 
 test_script:
