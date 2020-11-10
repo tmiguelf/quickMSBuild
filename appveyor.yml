@@ -5,8 +5,12 @@ os: Visual Studio 2019
 build: off
 
 install:
+    - wsl sudo apt update
+    - wsl sudo apt full-upgrade
     - wsl sudo sed --in-place 's/Prompt=lts/Prompt=normal/' /etc/update-manager/release-upgrades
     - wsl sudo do-release-upgrade
+    - wsl sudo apt update
+    - wsl sudo apt install g++
 
 test_script:
- msbuild /t:Build /p:Configuration=Release "./test/test.sln" -maxcpucount
+    msbuild /t:Build /p:Configuration=WSL_Release "./test/test.sln" -maxcpucount
