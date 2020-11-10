@@ -10,5 +10,5 @@ install:
     - wsl sudo apt install -y g++
 
 test_script:
-    msbuild /t:Build /p:Configuration=Release "./test/test.sln" -maxcpucount
-    msbuild /t:Build /p:Configuration=WSL_Release "./test/test.sln" -maxcpucount
+    - msbuild /t:Build /p:Configuration=Release "./test/test.sln" -maxcpucount
+    - msbuild /t:Build /p:Configuration=WSL_Release "./test/test.sln" -maxcpucount
