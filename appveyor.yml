@@ -4,5 +4,11 @@ os: Visual Studio 2019
 
 build: off
 
+install:
+    - wsl sudo sed --in-place 's/focal/groovy/g' /etc/apt/sources.list
+    - wsl sudo apt update
+    - wsl sudo apt install -y g++
+
 test_script:
- msbuild /t:Build /p:Configuration=Release "./test/test.sln" -maxcpucount
+    - msbuild /t:Build /p:Configuration=Release "./test/test.sln" -maxcpucount
+    - msbuild /t:Build /p:Configuration=WSL_Release "./test/test.sln" -maxcpucount
