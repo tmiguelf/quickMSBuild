@@ -5,12 +5,12 @@ os: Visual Studio 2019
 build: off
 
 install:
-    - wsl sudo apt update
-    - wsl sudo apt full-upgrade -y
     - wsl sudo sed --in-place 's/focal/groovy/g' /etc/apt/sources.list
     - wsl sudo apt update
     - wsl sudo apt -y upgrade
     - wsl sudo apt install -y g++
+    - wsl g++ --version
+    - wsl ld --version
 
 test_script:
     msbuild /t:Build /p:Configuration=WSL_Release "./test/test.sln" -maxcpucount
