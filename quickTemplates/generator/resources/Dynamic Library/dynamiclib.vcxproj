@@ -43,7 +43,7 @@
   <ImportGroup Label="PropertySheets">
     <Import Project="$(SolutionDir)locations.props" />
     <Import Project="$(quickMSBuildPath)default.cpp.props" />
-    <Import Project="$(versionLibPath)versionLib.include.props" />
+    <Import Project="$(versionPath)version.include.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup>
@@ -61,7 +61,9 @@
     <ClInclude Include="resources\versionSpecific.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="resources\dllVersion.rc" />
+    <ResourceCompile Include="resources\dllVersion.rc">
+      <ExcludedFromBuild Condition="'TargetOS'!='Windows'">true</ExcludedFromBuild>
+    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="$projectname$.import.props" />

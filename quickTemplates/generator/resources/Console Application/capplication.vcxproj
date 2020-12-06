@@ -43,7 +43,7 @@
   <ImportGroup Label="PropertySheets">
     <Import Project="$(SolutionDir)locations.props" />
     <Import Project="$(quickMSBuildPath)default.cpp.props" />
-    <Import Project="$(versionLibPath)versionLib.include.props" />
+    <Import Project="$(versionPath)version.include.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup>
@@ -58,7 +58,9 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="resources\genericIcon.rc" />
+    <ResourceCompile Include="resources\genericIcon.rc">
+      <ExcludedFromBuild Condition="'TargetOS'!='Windows'">true</ExcludedFromBuild>
+    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\generic.ico" />
