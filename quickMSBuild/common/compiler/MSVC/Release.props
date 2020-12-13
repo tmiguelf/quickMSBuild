@@ -8,6 +8,7 @@
 			<RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
 			<SDLCheck>true</SDLCheck>
 			<DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings><!-- C4996 causes errors regarding deprecated functionality -->
+			<WholeProgramOptimization>true</WholeProgramOptimization>
 		</ClCompile>
 		<ResourceCompile>
 			<PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
