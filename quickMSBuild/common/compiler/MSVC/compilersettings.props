@@ -27,7 +27,7 @@
 			<PreprocessorDefinitions>VC_EXTRALEAN;WIN32_LEAN_AND_MEAN;_HAS_EXCEPTIONS=0;NOMINMAX;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
 			<ExceptionHandling>false</ExceptionHandling>
 			<LanguageStandard_C>stdc17</LanguageStandard_C>
-			<LanguageStandard>stdcpplatest</LanguageStandard>
+			<LanguageStandard>stdcpp20</LanguageStandard>
 			<ConformanceMode>true</ConformanceMode>
 			<EnforceTypeConversionRules>true</EnforceTypeConversionRules>
 			<UseFullPaths>false</UseFullPaths>
