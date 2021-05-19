@@ -1,6 +1,6 @@
 version: '{build}-{branch}'
 
-os: Visual Studio 2019
+os: Visual Studio 2019 Preview
 
 build: off
 
