@@ -129,6 +129,10 @@
 		</ConfigError>
 	</ItemGroup>
 
+	<PropertyGroup Label="quickMSBuild" Condition="'$(PlatformToolset)'=='WSL_Clang_1_0' OR '$(PlatformToolset)'=='WSL_1_0'">
+		<DebuggerWorkingDirectory>$(OutDir)</DebuggerWorkingDirectory>
+	</PropertyGroup>
+
 	<!-- Remote Debugging -->
 	<ImportGroup Label="PropertySheets" Condition="'$(ConfigurationType)'=='DynamicLibrary' OR '$(ConfigurationType)'=='Application'">
 		<Import Project="$(SolutionDir)deploy.props" Condition="exists('$(SolutionDir)deploy.props')"/>
