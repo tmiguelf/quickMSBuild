@@ -38,7 +38,6 @@
 			<AdditionalOptions>/Zc:__cplusplus /Zc:strictStrings %(AdditionalOptions)</AdditionalOptions>
 			<ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
 			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-			<UseStandardPreprocessor>true</UseStandardPreprocessor>
 			<StringPooling>true</StringPooling>
 			<FloatingPointModel>Fast</FloatingPointModel>
 			<EnableModules>false</EnableModules>
