@@ -2,7 +2,8 @@
 This is a collection of modification files aimed at enhancing Visual Studio C++ projects, in order to produce easier and more consistent builds.
 
 Build Status:
-[![Build status](https://ci.appveyor.com/api/projects/status/s2a3dsli0hbbtmt9/branch/master?svg=true)](https://ci.appveyor.com/project/tmiguelf/quickmsbuild/branch/master)
+#### CI Suspended until CI tools are updated to the latest copilers
+
 
 #### Why quickMSBuild?
 If you are experienced Windows developer working with Visual Studio, you may be familiar with the scaling problems as solutions start to incorporate more and more projects. Increasing complicated dependency relationships, incompatible build configurations, libraries from who knows where they come from.\
@@ -84,38 +85,44 @@ Let’s take a look at an example of a project file:
 <!-- Toolset selection
 	This is where we start matching particular configurations
 	to the ways in which we want to compile our source code.
-	quickMSBuild requires you to define the "PlatformToolset"
+	quickMSBuild requires you to define the "CompilerFlavour", "BuildMethod",
 	and the "UseDebugLibraries".
 
-	The "PlatformToolset" is going to define what type of build
-	tools to use. The following are supported:
-		- v142             - MSVC v142 on Windows
-		- ClangCL          - Clang compiler on Windows
-		- WSL_1_0          - gcc/g++ compiler on Linux using WSL
-		- Remote_GCC_1_0   - gcc/g++ compiler on Linux using SSH
-		- WSL_Clang_1_0    - Clang compiler on Linux using WSL
-		- Remote_Clang_1_0 - Clang compiler on Linux using SSH
+	The "CompilerFlavour" is going to define what compiler
+	to use. The following are supported:
+		- MSVC  - MSVC v143 (Windows only)
+		- g++   - gcc/g++ (Linux only)
+		- clang - clang compiler (Windows or Linux)
+
+	The "BuildMethod" is going to determine where the build takes place:
+		- native - Build on Windows (MSVC or clang compiler)
+		- WSL    - Build using Windows Subsytem for Linux (g++ or clang compiler)
+		- ssh    - Build remotely on Linux over ssh (g++ or clang compiler)
 
 	The "UseDebugLibraries" option is going to define if
 	the build is a Debug build or a Release build
 
 	Everything else, quickMSBuild will deduce for you
-	based on the "PlatformToolset"
+	based on the  previous properties
 -->
   <PropertyGroup Label="quickMSBuild" Condition="'$(Configuration)'=='Debug'">
-    <PlatformToolset>v142</PlatformToolset>
+    <CompilerFlavour>MSVC</CompilerFlavour>
+    <BuildMethod>native</BuildMethod>
     <UseDebugLibraries>true</UseDebugLibraries>
   </PropertyGroup>
   <PropertyGroup Label="quickMSBuild" Condition="'$(Configuration)'=='Release'">
-    <PlatformToolset>v142</PlatformToolset>
+    <CompilerFlavour>MSVC</CompilerFlavour>
+    <BuildMethod>native</BuildMethod>
     <UseDebugLibraries>false</UseDebugLibraries>
   </PropertyGroup>
   <PropertyGroup Label="quickMSBuild" Condition="'$(Configuration)'=='WSL_Debug'">
-    <PlatformToolset>WSL_1_0</PlatformToolset>
+    <CompilerFlavour>g++</CompilerFlavour>
+    <BuildMethod>WSL</BuildMethod>
     <UseDebugLibraries>true</UseDebugLibraries>
   </PropertyGroup>
   <PropertyGroup Label="quickMSBuild" Condition="'$(Configuration)'=='WSL_Release'">
-    <PlatformToolset>WSL_1_0</PlatformToolset>
+    <CompilerFlavour>g++</CompilerFlavour>
+    <BuildMethod>WSL</BuildMethod>
     <UseDebugLibraries>false</UseDebugLibraries>
   </PropertyGroup>
 
@@ -229,10 +236,10 @@ The *.import.props adds the "additional include directories" of this project int
 The *.include.props only adds the "additional include directories".
 
 ## Extensions
-Compilers as of yet do not have a common of declaring interfaces that can be imported or exported from dynamically linked libraries. In order to support multi-platform, I provided an "extension/dll_api_macros.h" with the macros "DLL_IMPORT" and "DLL_EXPORT" for that purpose.
+Compilers as of yet do not have a common way of declaring interfaces that can be imported or exported from dynamically linked libraries. In order to support multi-platform, I provided an "extension/dll_api_macros.h" with the macros "DLL_IMPORT" and "DLL_EXPORT" for that purpose.
 
 ## Requirements
-Visual studio 2019 version 16.6 or higher
+Visual studio 2022 version 17.0.0 preview 2 or higher
 MSBuild with build tools version 16.6 or higher
 
 Although technically you only need the tools you intend to use, it is recommend that you have at least the MSVC toolset and the "Linux development with C++" toolset to take advantage of this.
