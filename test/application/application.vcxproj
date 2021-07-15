@@ -25,19 +25,23 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="quickMSBuild" Condition="'$(Configuration)'=='Debug'">
-    <PlatformToolset>v142</PlatformToolset>
+    <CompilerFlavour>MSVC</CompilerFlavour>
+    <BuildMethod>native</BuildMethod>
     <UseDebugLibraries>true</UseDebugLibraries>
   </PropertyGroup>
   <PropertyGroup Label="quickMSBuild" Condition="'$(Configuration)'=='Release'">
-    <PlatformToolset>v142</PlatformToolset>
+    <CompilerFlavour>MSVC</CompilerFlavour>
+    <BuildMethod>native</BuildMethod>
     <UseDebugLibraries>false</UseDebugLibraries>
   </PropertyGroup>
   <PropertyGroup Label="quickMSBuild" Condition="'$(Configuration)'=='WSL_Debug'">
-    <PlatformToolset>WSL_1_0</PlatformToolset>
+    <CompilerFlavour>g++</CompilerFlavour>
+    <BuildMethod>WSL</BuildMethod>
     <UseDebugLibraries>true</UseDebugLibraries>
   </PropertyGroup>
   <PropertyGroup Label="quickMSBuild" Condition="'$(Configuration)'=='WSL_Release'">
-    <PlatformToolset>WSL_1_0</PlatformToolset>
+    <CompilerFlavour>g++</CompilerFlavour>
+    <BuildMethod>WSL</BuildMethod>
     <UseDebugLibraries>false</UseDebugLibraries>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
