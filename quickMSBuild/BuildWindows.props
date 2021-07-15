@@ -27,31 +27,71 @@
 		<Import Project="$(MSBuildThisFileDirectory)Common\buildtype.props" />
 	</ImportGroup>
 
-	<!-- What's the target OS and used compiler? -->
+	<!-- How to build? -->
 
-	<PropertyGroup Label="quickMSBuild" Condition="'$(PlatformToolset)'=='v142'">
+	<PropertyGroup Label="quickMSBuild" Condition="'$(BuildMethod)'=='' AND '$(CompilerFlavour)'=='MSVC'">
+		<BuildMethod>native</BuildMethod>
+	</PropertyGroup>
+
+	<!-- Validate Build Method -->
+	<ItemGroup Condition="'$(BuildMethod)'!='native' AND '$(BuildMethod)'!='WSL' AND '$(BuildMethod)'!='ssh'">
+		<ConfigError Include="Unsuported OS">
+			<Message>Unsuported BuildMethod = "$(BuildMethod)"</Message>
+			<File>$(MSBuildThisFileFullPath)</File>
+		</ConfigError>
+	</ItemGroup>
+
+	<PropertyGroup Label="quickMSBuild" Condition="'$(CompilerFlavour)'==''">
+		<CompilerFlavour Condition="'$(BuildMethod)'=='native'">MSVC</CompilerFlavour>
+		<CompilerFlavour Condition="'$(BuildMethod)'=='WSL' OR '$(BuildMethod)'=='ssh'">g++</CompilerFlavour>
+	</PropertyGroup>
+
+	<!-- Validate Compiler -->
+	<ItemGroup Condition="'$(CompilerFlavour)'!='MSVC' AND '$(CompilerFlavour)'!='clang' AND '$(CompilerFlavour)'!='g++'">
+		<ConfigError Include="Unsuported compiler">
+			<Message>Unsuported CompilerFlavour = "$(CompilerFlavour)"</Message>
+			<File>$(MSBuildThisFileFullPath)</File>
+		</ConfigError>
+	</ItemGroup>
+
+	<!-- Pick a toolset -->
+	<PropertyGroup Label="quickMSBuild" Condition="'$(CompilerFlavour)'=='MSVC' AND '$(BuildMethod)'=='native'">
+		<PlatformToolset Condition="'$(PlatformToolset)'==''">v143</PlatformToolset>
+	</PropertyGroup>
+
+	<PropertyGroup Label="quickMSBuild" Condition="'$(CompilerFlavour)'=='g++' AND '$(BuildMethod)'=='WSL'">
+		<PlatformToolset Condition="'$(PlatformToolset)'==''">WSL_1_0</PlatformToolset>
+	</PropertyGroup>
+
+	<PropertyGroup Label="quickMSBuild" Condition="'$(CompilerFlavour)'=='g++' AND '$(BuildMethod)'=='ssh'">
+		<PlatformToolset Condition="'$(PlatformToolset)'==''">Remote_GCC_1_0</PlatformToolset>
+	</PropertyGroup>
+
+	<PropertyGroup Label="quickMSBuild" Condition="'$(CompilerFlavour)'=='clang' AND '$(BuildMethod)'=='native'">
+		<PlatformToolset Condition="'$(PlatformToolset)'==''">ClangCL</PlatformToolset>
+	</PropertyGroup>
+
+	<PropertyGroup Label="quickMSBuild" Condition="'$(CompilerFlavour)'=='clang' AND '$(BuildMethod)'=='WSL'">
+		<PlatformToolset Condition="'$(PlatformToolset)'==''">WSL_Clang_1_0</PlatformToolset>
+	</PropertyGroup>
+
+	<PropertyGroup Label="quickMSBuild" Condition="'$(CompilerFlavour)'=='clang' AND '$(BuildMethod)'=='ssh'">
+		<PlatformToolset Condition="'$(PlatformToolset)'==''">Remote_Clang_1_0</PlatformToolset>
+	</PropertyGroup>
+
+	<!-- Deduce OS -->
+	<PropertyGroup Label="quickMSBuild" Condition="'$(BuildMethod)'=='native'">
 		<TargetOS>Windows</TargetOS>
-		<CompilerFlavour>MSVC</CompilerFlavour>
-	</PropertyGroup>
-	<PropertyGroup Label="quickMSBuild" Condition="'$(PlatformToolset)'=='ClangCL'">
-		<TargetOS>Windows</TargetOS>
-		<CompilerFlavour>clang</CompilerFlavour>
 	</PropertyGroup>
 
-	<PropertyGroup Label="quickMSBuild" Condition="'$(PlatformToolset)'=='WSL_Clang_1_0' OR '$(PlatformToolset)'=='Remote_Clang_1_0'">
+	<PropertyGroup Label="quickMSBuild" Condition="'$(BuildMethod)'=='WSL' OR '$(BuildMethod)'=='ssh'">
 		<TargetOS>Linux</TargetOS>
-		<CompilerFlavour>clang</CompilerFlavour>
-	</PropertyGroup>
-
-	<PropertyGroup Label="quickMSBuild" Condition="'$(PlatformToolset)'=='WSL_1_0' OR '$(PlatformToolset)'=='Remote_GCC_1_0'">
-		<TargetOS>Linux</TargetOS>
-		<CompilerFlavour>g++</CompilerFlavour>
 	</PropertyGroup>
 
 	<!-- Validate OS -->
 	<ItemGroup Condition="'$(TargetOS)'!='Windows' AND '$(TargetOS)'!='Linux'">
 		<ConfigError Include="Unsuported OS">
-			<Message>Unable to determine TargetOS from PlatformToolset = "$(PlatformToolset)", or it's currently unsuported</Message>
+			<Message>Unable to determine TargetOS from BuildMethod = "$(BuildMethod)", or it's currently unsuported</Message>
 			<File>$(MSBuildThisFileFullPath)</File>
 		</ConfigError>
 	</ItemGroup>
@@ -63,14 +103,6 @@
 	<PropertyGroup Label="quickMSBuild" Condition="'$(TargetOS)'=='Linux'">
 		<shortOS>lin</shortOS>
 	</PropertyGroup>
-
-	<!-- Validate Compiler -->
-	<ItemGroup Condition="'$(CompilerFlavour)'!='MSVC' AND '$(CompilerFlavour)'!='clang' AND '$(CompilerFlavour)'!='g++'">
-		<ConfigError Include="Unsuported compiler">
-			<Message>Unable to determine CompilerFlavour from PlatformToolset = "$(PlatformToolset)", or it's currently unsuported</Message>
-			<File>$(MSBuildThisFileFullPath)</File>
-		</ConfigError>
-	</ItemGroup>
 
 	<!-- OS Specific config -->
 	<PropertyGroup Label="Globals" Condition="'$(TargetOS)'=='Windows'">

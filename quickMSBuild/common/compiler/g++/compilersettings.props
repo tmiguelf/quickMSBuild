@@ -32,6 +32,7 @@
 			<ThreadSafeStatics>Yes</ThreadSafeStatics>
 			<PositionIndependentCode>true</PositionIndependentCode>
 			<AdditionalOptions>-std=c++20 %(AdditionalOptions)</AdditionalOptions>
+			<RelaxIEEE>true</RelaxIEEE>
 		</ClCompile>
 	</ItemDefinitionGroup>
 </Project>
