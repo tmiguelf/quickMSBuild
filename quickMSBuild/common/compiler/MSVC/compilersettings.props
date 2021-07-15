@@ -39,7 +39,7 @@
 			<ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
 			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
 			<StringPooling>true</StringPooling>
-			<FloatingPointModel>Fast</FloatingPointModel>
+			<!--<FloatingPointModel>Fast</FloatingPointModel>-->
 			<EnableModules>false</EnableModules>
 		</ClCompile>
 		<ResourceCompile>
