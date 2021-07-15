@@ -37,8 +37,11 @@
 			<MultiProcessorCompilation>true</MultiProcessorCompilation>
 			<AdditionalOptions>/Zc:__cplusplus /Zc:strictStrings %(AdditionalOptions)</AdditionalOptions>
 			<ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
-			<EnableModules>false</EnableModules>
 			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+			<UseStandardPreprocessor>true</UseStandardPreprocessor>
+			<StringPooling>true</StringPooling>
+			<FloatingPointModel>Fast</FloatingPointModel>
+			<EnableModules>false</EnableModules>
 		</ClCompile>
 		<ResourceCompile>
 			<Culture>0x0000</Culture>

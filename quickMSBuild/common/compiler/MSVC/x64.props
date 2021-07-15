@@ -22,6 +22,9 @@
 -->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemDefinitionGroup>
+		<ClCompile>
+			<EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+		</ClCompile>
 		<Link>
 			<LargeAddressAware>true</LargeAddressAware>
 		</Link>

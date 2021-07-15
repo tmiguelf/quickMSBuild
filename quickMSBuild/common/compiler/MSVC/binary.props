@@ -39,6 +39,7 @@
 			<GenerateMapFile>true</GenerateMapFile>
 			<MapFileName>$(DebugDataNoExt).map</MapFileName>
 			<SubSystem>Windows</SubSystem>
+			<MapExports>true</MapExports>
 		</Link>
 	</ItemDefinitionGroup>
 	<ItemDefinitionGroup Condition="'$(BuildType)'=='Release'">
