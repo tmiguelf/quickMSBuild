@@ -31,7 +31,8 @@
 			<SymbolsHiddenByDefault>true</SymbolsHiddenByDefault>
 			<ThreadSafeStatics>Yes</ThreadSafeStatics>
 			<PositionIndependentCode>true</PositionIndependentCode>
-			<AdditionalOptions>-std=c++20 %(AdditionalOptions)</AdditionalOptions>
+			<AdditionalOptions Condition="'$(IntelliSenseBuild)'!='true'">-std=c++20 %(AdditionalOptions)</AdditionalOptions>
+			<CppLanguageStandard Condition="'$(IntelliSenseBuild)'=='true'">c++17</CppLanguageStandard>
 			<!--<RelaxIEEE>true</RelaxIEEE>-->
 		</ClCompile>
 	</ItemDefinitionGroup>
