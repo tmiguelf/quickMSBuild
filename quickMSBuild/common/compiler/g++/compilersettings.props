@@ -32,8 +32,8 @@
 			<ThreadSafeStatics>Yes</ThreadSafeStatics>
 			<PositionIndependentCode>true</PositionIndependentCode>
 			<AdditionalOptions>-mavx2 %(AdditionalOptions)</AdditionalOptions>
-			<AdditionalOptions Condition="'$(IntelliSenseBuild)'!='true'">-std=c++20 %(AdditionalOptions)</AdditionalOptions>
-			<CppLanguageStandard Condition="'$(IntelliSenseBuild)'=='true'">c++17</CppLanguageStandard>
+			<!--<AdditionalOptions Condition="'$(IntelliSenseBuild)'!='true'">-std=c++20 %(AdditionalOptions)</AdditionalOptions>-->
+			<CppLanguageStandard>c++17</CppLanguageStandard>
 			<!--<RelaxIEEE>true</RelaxIEEE>-->
 		</ClCompile>
 	</ItemDefinitionGroup>
