@@ -63,7 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resources\genericIcon.rc">
-      <ExcludedFromBuild Condition="'TargetOS'!='Windows'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(TargetOS)'!='Windows'">true</ExcludedFromBuild>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
