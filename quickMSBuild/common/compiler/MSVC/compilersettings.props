@@ -36,6 +36,7 @@
 			<IntrinsicFunctions>true</IntrinsicFunctions>
 			<MultiProcessorCompilation>true</MultiProcessorCompilation>
 			<AdditionalOptions>/Zc:__cplusplus /Zc:strictStrings %(AdditionalOptions)</AdditionalOptions>
+			<UseStandardPreprocessor>true</UseStandardPreprocessor>
 			<ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
 			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
 			<StringPooling>true</StringPooling>
