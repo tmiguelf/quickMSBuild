@@ -56,7 +56,7 @@
 
 	<!-- Pick a toolset -->
 	<PropertyGroup Label="quickMSBuild" Condition="'$(CompilerFlavour)'=='MSVC' AND '$(BuildMethod)'=='native'">
-		<PlatformToolset Condition="'$(PlatformToolset)'==''">v143</PlatformToolset>
+		<PlatformToolset Condition="'$(PlatformToolset)'==''">v145</PlatformToolset>
 	</PropertyGroup>
 
 	<PropertyGroup Label="quickMSBuild" Condition="'$(CompilerFlavour)'=='g++' AND '$(BuildMethod)'=='WSL'">
