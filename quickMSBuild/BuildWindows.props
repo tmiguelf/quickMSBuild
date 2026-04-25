@@ -106,7 +106,7 @@
 
 	<!-- OS Specific config -->
 	<PropertyGroup Label="Globals" Condition="'$(TargetOS)'=='Windows'">
-		<VCProjectVersion>16.0</VCProjectVersion>
+		<VCProjectVersion>18.0</VCProjectVersion>
 		<WindowsTargetPlatformVersion Condition="'$(WindowsTargetPlatformVersion)'==''">10.0</WindowsTargetPlatformVersion>
 	</PropertyGroup>
 
