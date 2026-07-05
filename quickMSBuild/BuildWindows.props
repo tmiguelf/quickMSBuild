@@ -22,11 +22,6 @@
 -->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-	<!-- Release or Debug? -->
-	<ImportGroup Label="PropertySheets">
-		<Import Project="$(MSBuildThisFileDirectory)Common\buildtype.props" />
-	</ImportGroup>
-
 	<!-- How to build? -->
 
 	<PropertyGroup Label="quickMSBuild" Condition="'$(BuildMethod)'=='' AND '$(CompilerFlavour)'=='MSVC'">
@@ -34,7 +29,7 @@
 	</PropertyGroup>
 
 	<!-- Validate Build Method -->
-	<ItemGroup Condition="'$(BuildMethod)'!='native' AND '$(BuildMethod)'!='WSL' AND '$(BuildMethod)'!='ssh'">
+	<ItemGroup Condition="'$(BuildMethod)'!='native' AND '$(BuildMethod)'!='WSL' AND '$(BuildMethod)'!='WSL2' AND '$(BuildMethod)'!='ssh'">
 		<ConfigError Include="Unsuported OS">
 			<Message>Unsuported BuildMethod = "$(BuildMethod)"</Message>
 			<File>$(MSBuildThisFileFullPath)</File>
@@ -43,7 +38,7 @@
 
 	<PropertyGroup Label="quickMSBuild" Condition="'$(CompilerFlavour)'==''">
 		<CompilerFlavour Condition="'$(BuildMethod)'=='native'">MSVC</CompilerFlavour>
-		<CompilerFlavour Condition="'$(BuildMethod)'=='WSL' OR '$(BuildMethod)'=='ssh'">g++</CompilerFlavour>
+		<CompilerFlavour Condition="'$(BuildMethod)'=='WSL' OR '$(BuildMethod)'=='WSL2' OR '$(BuildMethod)'=='ssh'">g++</CompilerFlavour>
 	</PropertyGroup>
 
 	<!-- Validate Compiler -->
@@ -63,6 +58,10 @@
 		<PlatformToolset Condition="'$(PlatformToolset)'==''">WSL_1_0</PlatformToolset>
 	</PropertyGroup>
 
+	<PropertyGroup Label="quickMSBuild" Condition="'$(CompilerFlavour)'=='g++' AND '$(BuildMethod)'=='WSL2'">
+		<PlatformToolset Condition="'$(PlatformToolset)'==''">WSL2_1_0</PlatformToolset>
+	</PropertyGroup>
+
 	<PropertyGroup Label="quickMSBuild" Condition="'$(CompilerFlavour)'=='g++' AND '$(BuildMethod)'=='ssh'">
 		<PlatformToolset Condition="'$(PlatformToolset)'==''">Remote_GCC_1_0</PlatformToolset>
 	</PropertyGroup>
@@ -73,6 +72,10 @@
 
 	<PropertyGroup Label="quickMSBuild" Condition="'$(CompilerFlavour)'=='clang' AND '$(BuildMethod)'=='WSL'">
 		<PlatformToolset Condition="'$(PlatformToolset)'==''">WSL_Clang_1_0</PlatformToolset>
+	</PropertyGroup>
+	
+	<PropertyGroup Label="quickMSBuild" Condition="'$(CompilerFlavour)'=='clang' AND '$(BuildMethod)'=='WSL2'">
+		<PlatformToolset Condition="'$(PlatformToolset)'==''">WSL2_Clang_1_0</PlatformToolset>
 	</PropertyGroup>
 
 	<PropertyGroup Label="quickMSBuild" Condition="'$(CompilerFlavour)'=='clang' AND '$(BuildMethod)'=='ssh'">

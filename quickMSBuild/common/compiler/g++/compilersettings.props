@@ -34,7 +34,7 @@
 			<ThreadSafeStatics>Yes</ThreadSafeStatics>
 			<PositionIndependentCode>true</PositionIndependentCode>
 			<AdditionalOptions>-mavx2 %(AdditionalOptions)</AdditionalOptions>
-			<CppLanguageStandard>c++20</CppLanguageStandard>
+			<CppLanguageStandard>c++23</CppLanguageStandard>
 			<!--<RelaxIEEE>true</RelaxIEEE>-->
 		</ClCompile>
 	</ItemDefinitionGroup>
