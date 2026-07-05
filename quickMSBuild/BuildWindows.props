@@ -121,31 +121,31 @@
 	<!-- Microsoft defaults messes up this properties :( -->
 	<!-- So we need to save them, to later restore them -->
 	<PropertyGroup Label="Configuration">
-		<quickSaveConfigurationType>$(ConfigurationType)</quickSaveConfigurationType>
 		<quickSavePlatformToolset>$(PlatformToolset)</quickSavePlatformToolset>
+		<quickSaveConfigurationType>$(ConfigurationType)</quickSaveConfigurationType>
 		<quickSaveUseDebugLibraries>$(UseDebugLibraries)</quickSaveUseDebugLibraries>
 	</PropertyGroup>
-
-	<!-- Release or Debug? -->
-	<ImportGroup Label="PropertySheets">
-		<Import Project="$(MSBuildThisFileDirectory)Common\buildtype.props" />
-	</ImportGroup>
 
 	<!-- Microsoft defaults -->
 	<ImportGroup Label="PropertySheets">
 		<Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
 	</ImportGroup>
 
-	<!-- Compiler Specific config -->
-	<PropertyGroup Label="Configuration" Condition="'$(TargetOS)'=='Windows'">
-		<WholeProgramOptimization Condition="'$(WholeProgramOptimization)'=='' AND '$(BuildType)'=='Release'">true</WholeProgramOptimization>
-	</PropertyGroup>
-
 	<PropertyGroup Label="Configuration">
 		<PlatformToolset>$(quickSavePlatformToolset)</PlatformToolset>
 		<ConfigurationType>$(quickSaveConfigurationType)</ConfigurationType>
 		<UseDebugLibraries>$(quickSaveUseDebugLibraries)</UseDebugLibraries>
 	</PropertyGroup>
+
+	<!-- Compiler Specific config -->
+	<PropertyGroup Label="Configuration" Condition="'$(TargetOS)'=='Windows'">
+		<WholeProgramOptimization Condition="'$(WholeProgramOptimization)'=='' AND '$(BuildType)'=='Release'">true</WholeProgramOptimization>
+	</PropertyGroup>
+
+	<!-- Release or Debug? -->
+	<ImportGroup Label="PropertySheets">
+		<Import Project="$(MSBuildThisFileDirectory)Common\buildtype.props" />
+	</ImportGroup>
 
 	<!-- Default Windows Props: Microsoft already done most of the work -->
 	<ImportGroup Label="PropertySheets">
