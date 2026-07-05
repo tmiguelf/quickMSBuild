@@ -23,7 +23,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
 	<!-- How to build? -->
-
 	<PropertyGroup Label="quickMSBuild" Condition="'$(BuildMethod)'=='' AND '$(CompilerFlavour)'=='MSVC'">
 		<BuildMethod>native</BuildMethod>
 	</PropertyGroup>
@@ -87,7 +86,7 @@
 		<TargetOS>Windows</TargetOS>
 	</PropertyGroup>
 
-	<PropertyGroup Label="quickMSBuild" Condition="'$(BuildMethod)'=='WSL' OR '$(BuildMethod)'=='ssh'">
+	<PropertyGroup Label="quickMSBuild" Condition="'$(BuildMethod)'=='WSL' OR '$(BuildMethod)'=='WSL2' OR '$(BuildMethod)'=='ssh'">
 		<TargetOS>Linux</TargetOS>
 	</PropertyGroup>
 
@@ -126,6 +125,11 @@
 		<quickSavePlatformToolset>$(PlatformToolset)</quickSavePlatformToolset>
 		<quickSaveUseDebugLibraries>$(UseDebugLibraries)</quickSaveUseDebugLibraries>
 	</PropertyGroup>
+
+	<!-- Release or Debug? -->
+	<ImportGroup Label="PropertySheets">
+		<Import Project="$(MSBuildThisFileDirectory)Common\buildtype.props" />
+	</ImportGroup>
 
 	<!-- Microsoft defaults -->
 	<ImportGroup Label="PropertySheets">
